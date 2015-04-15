@@ -1,7 +1,10 @@
 package net.whitneyhunter.image.writer;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -13,18 +16,20 @@ import net.whitneyhunter.image.ImageMetadata;
 public class StandardWriterStrategy extends WriterStrategySupport {
 
     @Override
-    public void write(File outputBaseDir, ImageMetadata imageMetadata) {
+    public void write(File outputBaseDir, ImageMetadata imageMetadata)
+            throws IOException {
         LocalDateTime originalDate = imageMetadata.getOriginalDate();
         if (originalDate != null) {
             File outputPath = calculatePath(outputBaseDir, originalDate);
             String fileBaseName = calculateFileBase(originalDate);
-            String fileSuffix = FileUtil.getSuffix(imageMetadata.getFile());
+            String fileSuffix = FileUtil.getNormalizedSuffix(imageMetadata
+                    .getFile());
             int imageNumber = calculateImageNumber(outputPath, fileBaseName);
             File outputFilePath = calculateFilePath(outputPath, fileBaseName,
                     fileSuffix, imageNumber);
             copyFile(imageMetadata.getFile(), outputFilePath);
         } else {
-            System.out.println("null value");
+            System.out.println("No date found: " + imageMetadata.getFile());
         }
     }
 
@@ -46,7 +51,7 @@ public class StandardWriterStrategy extends WriterStrategySupport {
     }
 
     private int calculateImageNumber(File outputPath, String fileBaseName) {
-        boolean isDirCreated = outputPath.mkdirs();
+        outputPath.mkdirs();
         int number = 1;
         String[] files = outputPath.list();
         for (String file : files) {
@@ -64,9 +69,10 @@ public class StandardWriterStrategy extends WriterStrategySupport {
         return new File(outputPath, fileName);
     }
 
-    private void copyFile(File inputFilePath, File outputFilePath) {
-        System.out.println(inputFilePath + "\t" + outputFilePath);
-//        Files.copy(inputFilePath, outputFilePath, REPLACE_EXISTING);
+    private void copyFile(File inputFilePath, File outputFilePath)
+            throws IOException {
+        Files.copy(inputFilePath.toPath(), outputFilePath.toPath(),
+                REPLACE_EXISTING, COPY_ATTRIBUTES);
     }
 
 }

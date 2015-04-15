@@ -24,12 +24,18 @@ public abstract class ReaderStrategySupport implements ReaderStrategy {
     static {
         readerStrategyMap.put("NEF", new NefReaderStrategy());
         ReaderStrategy jpegReaderStrategy = new JpegReaderStrategy();
-        readerStrategyMap.put("jpeg", jpegReaderStrategy);
-        readerStrategyMap.put("jpg", jpegReaderStrategy);
+        readerStrategyMap.put("JPEG", jpegReaderStrategy);
+        readerStrategyMap.put("JPG", jpegReaderStrategy);
+        ReaderStrategy videoReaderStrategy = new VideoReaderStrategy();
+        readerStrategyMap.put("MP4", videoReaderStrategy);
+        readerStrategyMap.put("M4V", videoReaderStrategy);
+        readerStrategyMap.put("AVI", videoReaderStrategy);
+        readerStrategyMap.put("MOV", videoReaderStrategy);
+        readerStrategyMap.put("3GP", videoReaderStrategy);
     }
 
     public static ReaderStrategy getInstance(File file) {
-        String suffix = FileUtil.getSuffix(file);
+        String suffix = FileUtil.getNormalizedSuffix(file);
         return readerStrategyMap.get(suffix);
     }
 

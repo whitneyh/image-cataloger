@@ -9,35 +9,40 @@ import net.whitneyhunter.image.writer.WriterStrategySupport;
 
 public class Application {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         new Application().run(args);
     }
 
-    private void processFile(File inputBaseDir, File outputBaseDir)
-            throws Exception {
-        ReaderStrategy strategy = ReaderStrategySupport
-                .getInstance(inputBaseDir);
-        if (strategy != null) {
-            ImageMetadata imageMetadata = strategy.read(inputBaseDir);
-            WriterStrategySupport.getInstance(inputBaseDir).write(
-                    outputBaseDir, imageMetadata);
+    private void processFile(File inputFile, File outputBaseDir) {
+        try {
+            ReaderStrategy strategy = ReaderStrategySupport
+                    .getInstance(inputFile);
+            if (strategy != null) {
+                ImageMetadata imageMetadata = strategy.read(inputFile);
+                WriterStrategySupport.getInstance(inputFile).write(
+                        outputBaseDir, imageMetadata);
+            } else {
+                System.out.println("No strategy found for: " + inputFile);
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to load: " + inputFile);
+            e.printStackTrace();
         }
     }
 
-    private void processFileOrDirectory(File inputBaseDir, File outputBaseDir)
-            throws Exception {
-        if (inputBaseDir.isDirectory()) {
-            for (String contents : inputBaseDir.list()) {
-                File item = new File(inputBaseDir.getAbsolutePath()
-                        + File.separator + contents);
+    private void processFileOrDirectory(File input, File outputBaseDir) {
+        if (input.isDirectory()) {
+            for (String contents : input.list()) {
+                File item = new File(input.getAbsolutePath() + File.separator
+                        + contents);
                 processFileOrDirectory(item, outputBaseDir);
             }
         } else {
-            processFile(inputBaseDir, outputBaseDir);
+            processFile(input, outputBaseDir);
         }
     }
 
-    private void run(String[] args) throws Exception {
+    private void run(String[] args) {
         String inputBaseString = args[0];
         File inputBaseDir = new File(inputBaseString);
         String outputBaseString = args[1];
