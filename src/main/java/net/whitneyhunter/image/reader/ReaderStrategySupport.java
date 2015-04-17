@@ -58,8 +58,13 @@ public abstract class ReaderStrategySupport implements ReaderStrategy {
                         DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss"));
                 return originalDate;
             }
+        } else {
+            System.out.println("Unable to read EXIF for file: " + image);
         }
-        return null;
+        LocalDateTime toUse = FileUtil.getEarlierDate(image);
+        System.out.println("No EXIF date found. Using: " + toUse
+                + " for file: " + image);
+        return toUse;
     }
 
     private String doGetOriginalDate(ImageMetadataItem metadataItem) {
