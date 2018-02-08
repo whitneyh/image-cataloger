@@ -15,12 +15,10 @@ public class Application {
 
     private void processFile(File inputFile, File outputBaseDir) {
         try {
-            ReaderStrategy strategy = ReaderStrategySupport
-                    .getInstance(inputFile);
+            ReaderStrategy strategy = ReaderStrategySupport.getInstance(inputFile);
             if (strategy != null) {
                 ImageMetadata imageMetadata = strategy.read(inputFile);
-                WriterStrategySupport.getInstance(inputFile).write(
-                        outputBaseDir, imageMetadata);
+                WriterStrategySupport.getInstance(inputFile).write(outputBaseDir, imageMetadata);
             } else {
                 System.out.println("No strategy found for: " + inputFile);
             }
@@ -33,8 +31,7 @@ public class Application {
     private void processFileOrDirectory(File input, File outputBaseDir) {
         if (input.isDirectory()) {
             for (String contents : input.list()) {
-                File item = new File(input.getAbsolutePath() + File.separator
-                        + contents);
+                File item = new File(input.getAbsolutePath() + File.separator + contents);
                 processFileOrDirectory(item, outputBaseDir);
             }
         } else {
