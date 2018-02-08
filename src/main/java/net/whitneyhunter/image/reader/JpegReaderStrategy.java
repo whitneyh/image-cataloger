@@ -2,13 +2,14 @@ package net.whitneyhunter.image.reader;
 
 import java.io.File;
 
+import net.whitneyhunter.image.FileUtil;
 import net.whitneyhunter.image.ImageMetadata;
 
-public class JpegReaderStrategy extends ReaderStrategySupport {
+public class JpegReaderStrategy implements ReaderStrategy {
 
     @Override
     public ImageMetadata read(File file) throws Exception {
-        return new ImageMetadata(file, getOriginalDate(file));
+        return new ImageMetadata(file, FileUtil.getOriginalDate(file));
     }
 
 }
