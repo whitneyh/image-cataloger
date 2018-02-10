@@ -1,21 +1,10 @@
 package net.whitneyhunter.image.reader;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.whitneyhunter.image.FileUtil;
-
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.Imaging;
-import org.apache.commons.imaging.common.ImageMetadata;
-import org.apache.commons.imaging.common.ImageMetadata.ImageMetadataItem;
-import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
+import net.whitneyhunter.util.FileUtil;
 
 public abstract class ReaderStrategyFactory {
 

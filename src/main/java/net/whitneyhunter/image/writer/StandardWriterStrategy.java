@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-import net.whitneyhunter.image.FileUtil;
+import net.whitneyhunter.util.FileUtil;
 import net.whitneyhunter.image.ImageMetadata;
 
 public class StandardWriterStrategy extends WriterStrategySupport {
